@@ -175,11 +175,11 @@ if ( ! class_exists( 'Customer_Form' ) ) {
 				'has_archive'         => true,
 				'exclude_from_search' => true,
 				'publicly_queryable'  => false,
-				'rewrite' => array( 'slug' => 'customers' ),
+				'rewrite' => array( 'slug' => 'customer' ),
 			);
 
 			// Registering your Customer Post Type
-			register_post_type( 'customers', $args );
+			register_post_type( 'customer', $args );
 
 		}
 

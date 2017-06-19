@@ -58,7 +58,7 @@ if ( ! class_exists( 'CForms_Admin' ) ) {
 			}
 
 			$post_id = wp_insert_post( array(
-				'post_type'      => 'customers',
+				'post_type'      => 'customer',
 				'post_title'     => $data['name'],
 				'post_content'   => $data['message'],
 				'post_status'    => 'publish',
