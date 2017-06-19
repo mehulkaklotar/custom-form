@@ -71,7 +71,7 @@ if ( ! class_exists( 'Customer_Form' ) ) {
 		 * @since  0.1
 		 */
 		private function init_hooks() {
-			add_action( 'init', array( $this, 'init' ) );
+			add_action( 'init', array( $this, 'init' ), 0 );
 		}
 
 		/**
@@ -101,13 +101,15 @@ if ( ! class_exists( 'Customer_Form' ) ) {
 		 * Include required core files used in admin and on the frontend.
 		 */
 		public function includes() {
-			include_once( 'admin/class-cforms-admin.php' );
+			require_once( 'includes/admin/class-cforms-admin.php' );
+			require_once( 'includes/class-cforms.php' );
 		}
 
 		/**
-		 * Init WooCommerce when WordPress Initialises.
+		 * Init when WordPress Initialises.
 		 */
 		public function init() {
+			$this->customer_post_type();
 			$this->includes();
 		}
 
@@ -125,6 +127,60 @@ if ( ! class_exists( 'Customer_Form' ) ) {
 		 */
 		public function plugin_path() {
 			return untrailingslashit( plugin_dir_path( __FILE__ ) );
+		}
+
+		public function customer_post_type() {
+
+			// Set UI labels for Custom Post Type
+			$labels = array(
+				'name'               => _x( 'Customers', 'Customers', 'cforms' ),
+				'singular_name'      => _x( 'Customer', 'Customer', 'cforms' ),
+				'menu_name'          => __( 'Customer', 'cforms' ),
+				'all_items'          => __( 'All Customers', 'cforms' ),
+				'view_item'          => __( 'View Customer', 'cforms' ),
+				'add_new_item'       => __( 'Add New Customer', 'cforms' ),
+				'add_new'            => __( 'Add New', 'cforms' ),
+				'edit_item'          => __( 'Edit Customer', 'cforms' ),
+				'update_item'        => __( 'Update Customer', 'cforms' ),
+				'search_items'       => __( 'Search Customer', 'cforms' ),
+				'not_found'          => __( 'Not Found', 'cforms' ),
+				'not_found_in_trash' => __( 'Not found in Trash', 'cforms' ),
+			);
+
+			// Set other options for Custom Post Type
+
+			$args = array(
+				'label'               => __( 'customers', 'cforms' ),
+				'description'         => __( 'Customer news and reviews', 'cforms' ),
+				'labels'              => $labels,
+				// Features this CPT supports in Post Editor
+				'supports'            => array(
+					'title',
+					'editor',
+					'excerpt',
+					'author',
+					'thumbnail',
+					'comments',
+					'revisions',
+					'custom-fields',
+				),
+				'hierarchical'        => false,
+				'public'              => false,
+				'show_ui'             => true,
+				'show_in_menu'        => true,
+				'show_in_nav_menus'   => true,
+				'show_in_admin_bar'   => true,
+				'menu_position'       => 5,
+				'can_export'          => true,
+				'has_archive'         => true,
+				'exclude_from_search' => true,
+				'publicly_queryable'  => false,
+				'rewrite' => array( 'slug' => 'customers' ),
+			);
+
+			// Registering your Customer Post Type
+			register_post_type( 'customers', $args );
+
 		}
 
 	}
